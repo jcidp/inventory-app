@@ -1,7 +1,9 @@
 import express from "express";
-import _dotenv from "dotenv/config";
+import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import mountRoutes from "./routes/indexRouter";
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -14,7 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", (_req, res) => res.render("index"));
+mountRoutes(app);
 
 app.use((err, req, res, next): any => {
   console.error(err);
