@@ -4,10 +4,10 @@ import trainersRouter from "./trainersRouter"
 import typesRouter from "./typesRoute";
 
 const mountRoutes = (app) => {
-  app.use("/", getTrainers);
   app.use("/trainers", trainersRouter);
   app.use("/pokemon", pokemonRouter);
   app.use("/types", typesRouter);
+  app.use("/", getTrainers);
 }
 
 export default mountRoutes;

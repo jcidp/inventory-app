@@ -3,12 +3,12 @@
 <%- include("partials/head"); %>
 <body>
   <%- include("partials/navbar"); %>
-  <h1>Trainers</h1>
+  <h1>Types</h1>
   <main>
-    <% trainers.forEach(trainer => { %>
+    <% types.forEach(type => { %>
       <div>
-        <span><%= trainer.name %></span>
-        <a href="/trainers/<%= trainer.id %>">View</a>
+        <span><%= type.type %></span>
+        <a href="/types/<%= type.id %>">View</a>
       </div>
     <% }); %>
   </main>

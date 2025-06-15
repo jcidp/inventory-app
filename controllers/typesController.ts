@@ -15,7 +15,7 @@ export async function getType(req, res) {
   const { rows } = await query("SELECT type FROM types WHERE id = $1", [id]);
   if (!rows.length) throw new CustomNotFoundError("Type not found");
   const type = rows[0];
-  const pokemon = getTypePokemon(id);
+  const pokemon = await getTypePokemon(id);
   res.render("type", {type, pokemon});
 }
 

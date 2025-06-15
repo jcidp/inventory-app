@@ -15,7 +15,7 @@ export async function getTrainer(req, res) {
   const { rows } = await query("SELECT name FROM trainers WHERE id = $1", [id]);
   if (!rows.length) throw new CustomNotFoundError("Trainer not found");
   const trainer = rows[0];
-  const pokemon = getTrainerPokemon(id);
+  const pokemon = await getTrainerPokemon(id);
   res.render("trainer", {trainer, pokemon});
 }
 

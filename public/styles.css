@@ -1,3 +1,28 @@
 h1 {
   color: purple;
+  margin: 1rem 0;
+}
+
+a {
+  color: navy;
+  text-decoration: none;
+}
+
+main {
+  margin: 1rem 0;
+}
+
+nav {
+  font-size: 1.5em;
+
+  li {
+    display: inline;
+  }
+
+  ul {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    gap: 8rem;
+  }
 }

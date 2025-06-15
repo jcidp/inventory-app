@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/head"); %>
+<body>
+  <%- include("partials/navbar"); %>
+  <h1>All Pokemon</h1>
+  <main>
+    <% pokemon.forEach(mon => { %>
+      <div>
+        <span><%= mon.species %></span>
+        <span><%= mon.type_1 %></span>
+        <span><%= mon.type_2 %></span>
+        <span>Trainer: <%= mon.trainer %></span>
+      </div>
+    <% }); %>
+  </main>
+</body>
+</html>
