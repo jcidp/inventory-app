@@ -26,3 +26,11 @@ nav {
     gap: 8rem;
   }
 }
+
+.hidden {
+  display: none;
+}
+
+.container {
+  margin: 1rem 0;
+}

@@ -1,4 +1,22 @@
+import { body, validationResult } from "express-validator";
 import { query } from "../db";
+import { pokemonSpecies } from "../db/enums";
+import { queryTrainer } from "./trainersController";
+
+const pokemonValidator = [
+  body("species").trim()
+    .isIn(pokemonSpecies).withMessage("Species must exist."),
+  body("type1")
+    .isInt({min: 1, max: 18}).withMessage("Type 1 must exist."),
+  body("type2").optional({values: "falsy"})
+    .isInt({min: 1, max: 18}).withMessage("Type 2 must exist.")
+    .custom((value, { req }) => {
+      if (value && parseInt(value) === parseInt(req.body.type1)) {
+        throw new Error("Type 2 must be different from Type 1.");
+      }
+      return true;
+    }),
+];
 
 export async function getAllPokemon(_req, res) {
   const { rows } = await query(`
@@ -11,3 +29,26 @@ export async function getAllPokemon(_req, res) {
   `);
  res.render("pokemon", {pokemon: rows});
 }
+
+export const createPokemon = [
+  pokemonValidator,
+  async (req, res) => {
+    const { trainerId } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const {trainer, pokemon, types} = await queryTrainer(trainerId);
+      return res.status(400).render("trainer", {
+        trainer,
+        pokemon,
+        types,
+        errors: errors.array()
+      });
+    }
+    const { species, type1, type2 } = req.body;
+    await query(`
+      INSERT INTO pokemon (species, type_1_id, type_2_id, trainer_id)
+      VALUES ($1, $2, $3, $4);
+    `, [species, type1, type2 || null, trainerId]);
+    res.redirect(`/trainers/${trainerId}`);
+  },
+];

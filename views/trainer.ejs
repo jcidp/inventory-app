@@ -6,13 +6,46 @@
   <h1><%= trainer.name %></h1>
   <a href="/">Back to Trainers</a>
   <main>
-    <% pokemon.forEach(mon => { %>
-      <div>
-        <span><%= mon.species %></span>
-        <span><%= mon.type_1 %></span>
-        <span><%= mon.type_2 %></span>
-      </div>
-    <% }); %>
+    <div class="container">
+      <% pokemon.forEach(mon => { %>
+        <div>
+          <span><%= mon.species %></span>
+          <span><%= mon.type_1 %></span>
+          <span><%= mon.type_2 %></span>
+        </div>
+      <% }); %>
+      <% if (!pokemon.length) { %>
+        <p>This trainer has no pokemon!</p>
+      <% } %>
+    </div>
+    <%- include("partials/errors.ejs") %>
+    <button class="hidable" onclick="toggleHide()">Add Pokemon</button>
+    <form action="/pokemon/create/<%= trainer.id %>" method="POST" class="hidable hidden">
+      <label for="species">Species</label>
+      <input type="text" name="species" id="species" required>
+      <label for="type1">Type 1</label>
+      <select name="type1" id="type1" required>
+        <option value="">Select a type</option>
+        <% types.forEach(type => { %>
+          <option value="<%= type.id %>"><%= type.type %></option>
+        <% }) %>
+      </select>
+      <label for="type2">Type 2</label>
+      <select name="type2" id="type2">
+        <option value="">None (optional)</option>
+        <% types.forEach(type => { %>
+          <option value="<%= type.id %>"><%= type.type %></option>
+        <% }) %>
+      </select>
+      <button type="submit">Submit</button>
+      <button type="button" onclick="toggleHide()">Cancel</button>
+    </form>
   </main>
+  <script>
+    const hidableElements = document.querySelectorAll(".hidable");
+    function toggleHide(e) {
+      hidableElements.forEach(ele => ele.classList.toggle("hidden"));
+    }
+  </script>
 </body>
 </html>
