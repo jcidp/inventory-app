@@ -4,6 +4,7 @@
 <body>
   <%- include("partials/navbar"); %>
   <h1><%= trainer.name %></h1>
+  <a href="/trainers/<%= trainer.id %>/edit" class="block">Edit trainer</a>
   <a href="/">Back to Trainers</a>
   <main>
     <div class="container">
@@ -22,7 +23,7 @@
     <button class="hidable" onclick="toggleHide()">Add Pokemon</button>
     <form action="/pokemon/create/<%= trainer.id %>" method="POST" class="hidable hidden">
       <label for="species">Species</label>
-      <input type="text" name="species" id="species" required>
+      <input type="text" name="species" id="species" autocomplete="off" required>
       <label for="type1">Type 1</label>
       <select name="type1" id="type1" required>
         <option value="">Select a type</option>

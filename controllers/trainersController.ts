@@ -46,24 +46,70 @@ async function getTrainerPokemon(trainerId: number) {
 }
 
 export function newTrainer(_req, res) {
-  res.render("newTrainer");
+  const back = {href: "/", text: "Back to trainers"};
+  res.render("trainerForm", {
+    title: "New trainer",
+    back,
+  });
 }
 
 export const createTrainer = [
   validateTrainer,
   async (req, res) => {
     const errors = validationResult(req);
+    const { name } = req.body;
     if (!errors.isEmpty()) {
-      return res.status(400).render("newTrainer", {
+      const back = {href: "/", text: "Back to trainers"};
+      return res.status(400).render("trainerForm", {
+        title: "New trainer",
+        back,
+        trainerName: name,
         errors: errors.array(),
       });
     }
-    const { name } = req.body;
     const { rows } = await query(`
       INSERT INTO trainers (name)
       VALUES ($1)
       RETURNING id;
     `, [name]);
     res.redirect(`/trainers/${rows[0].id}`);
+  },
+];
+
+export async function editTrainer(req, res) {
+  const { id } = req.params;
+  const { rows } = await query("SELECT * FROM trainers WHERE id = $1;", [id]);
+  const trainer = rows[0];
+  const back = {href: `/trainers/${id}`, text: "Return without editing"};
+  res.render("trainerForm", {
+    title: "Update trainer",
+    action: `/trainers/${id}/update`,
+    back,
+    trainerName: trainer.name,
+  });
+}
+
+export const updateTrainer = [
+  validateTrainer,
+  async (req, res) => {
+    const { id } = req.params;
+    const errors = validationResult(req);
+    const { name } = req.body;
+    if (!errors.isEmpty()) {
+      const back = {href: `/trainers/${id}`, text: "Return without editing"};
+      return res.status(400).render("trainerForm", {
+        title: "Update trainer",
+        action: `/trainers/${id}/update`,
+        back,
+        trainerName: name,
+        errors: errors.array(),
+      });
+    }
+    await query(`
+      UPDATE trainers
+      SET name = $1
+      WHERE id = $2;
+    `, [name, id]);
+    res.redirect(`/trainers/${id}`); 
   },
 ];
