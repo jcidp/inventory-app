@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTrainer, editTrainer, getTrainer, newTrainer, updateTrainer } from "../controllers/trainersController";
+import { createTrainer, editTrainer, getTrainer, newTrainer, removeTrainer, updateTrainer } from "../controllers/trainersController";
 
 const trainersRouter = Router();
 
@@ -8,6 +8,6 @@ trainersRouter.get("/:id", getTrainer);
 trainersRouter.get("/:id/edit", editTrainer);
 trainersRouter.post("/create", createTrainer);
 trainersRouter.post("/:id/update", updateTrainer);
-// trainersRouter.delete("/:id", removeTrainer);
+trainersRouter.get("/:id/delete", removeTrainer);
 
 export default trainersRouter;

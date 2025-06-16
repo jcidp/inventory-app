@@ -52,3 +52,9 @@ export const createPokemon = [
     res.redirect(`/trainers/${trainerId}`);
   },
 ];
+
+export async function removePokemon(req, res) {
+  const { id } = req.params;
+  const { rows: pokemon } = await query("DELETE FROM pokemon WHERE id = $1 RETURNING trainer_id", [id]);
+  res.redirect(`/trainers/${pokemon[0].trainer_id}`);
+}

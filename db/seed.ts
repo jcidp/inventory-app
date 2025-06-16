@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS pokemon (
   species pokemon_species,
   type_1_id INTEGER NOT NULL REFERENCES types(id),
   type_2_id INTEGER REFERENCES types(id),
-  trainer_id INTEGER NOT NULL REFERENCES trainers(id)
+  trainer_id INTEGER NOT NULL REFERENCES trainers(id) ON DELETE CASCADE
 );
 `;
 

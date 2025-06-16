@@ -34,7 +34,7 @@ export async function queryTrainer(id: number) {
 
 async function getTrainerPokemon(trainerId: number) {
   const {rows} = await query(`
-    SELECT species, t1.type type_1, t2.type type_2, tr.name trainer
+    SELECT p.id, species, t1.type type_1, t2.type type_2, tr.name trainer
     FROM pokemon p
     JOIN types t1 ON p.type_1_id = t1.id
     LEFT JOIN types t2 ON p.type_2_id = t2.id
@@ -113,3 +113,9 @@ export const updateTrainer = [
     res.redirect(`/trainers/${id}`); 
   },
 ];
+
+export async function removeTrainer(req, res) {
+  const { id } = req.params;
+  await query("DELETE FROM trainers WHERE id = $1", [id]);
+  res.redirect("/");
+}

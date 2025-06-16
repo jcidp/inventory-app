@@ -38,3 +38,7 @@ nav {
 .block {
   display: block;
 }
+
+.danger {
+  color: darkred
+}
